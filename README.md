@@ -4,7 +4,7 @@ import random
 def get_user_choice():
     user_input = input("Выберите (к, н, б): ").lower()
     while user_input not in ['к', 'н', 'б']:
-        print("Неверный ввод. Пожалуйста, выберите к, н или б.")
+        print("Неверный ввод Пожалуйста, выберите к, н или б.")
         user_input = input("Выберите (к, н, б): ").lower()
     return user_input
 
@@ -18,12 +18,12 @@ def winner(user_choice, computer_choice):
     elif (user_choice == 'к' and computer_choice == 'н') or \
             (user_choice == 'н' and computer_choice == 'б') or \
             (user_choice == 'б' and computer_choice == 'к'):
-        return "Вы выиграли!"
+        return "Вы выиграли!УРА "
     else:
         return "Комп выиграл!"
 
 def play_game():
-    print("Добро пожаловать в игру 'К, Н, Б'!")
+    print("Добро пожаловать в 'К, Н, Б'!")
     user_choice = get_user_choice()
     computer_choice = get_computer_choice()
 
