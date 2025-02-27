@@ -1,36 +1,80 @@
-import random
+ЗАДАЧА 1
+from openpyxl import load_workbook
 
-def get_user_choice():
-    user_input = input("Выберите (к, н, б): ").lower()
-    while user_input not in ['к', 'н', 'б']:
-        print("Неверный ввод Пожалуйста, выберите к, н или б.")
-        user_input = input("Выберите (к, н, б): ").lower()
-    return user_input
+def get_row_from_excel(file_path, row_index):
+    try:
+        # Загрузка Excel файла
+        workbook = load_workbook(filename='Лист XLSX.xlsx')
+        sheet = workbook.active  # Получаем активный лист
 
-def get_computer_choice():
-    choices = ['к', 'н', 'б']
-    return random.choice(choices)
+        # Получение строки по индексу (индексация с 1)
+        row = [cell.value for cell in sheet[row_index + 1]]
 
-def winner(user_choice, computer_choice):
-    if user_choice == computer_choice:
-        return "Ничья!"
-    elif (user_choice == 'к' and computer_choice == 'н') or \
-            (user_choice == 'н' and computer_choice == 'б') or \
-            (user_choice == 'б' and computer_choice == 'к'):
-        return "Вы выиграли!УРА "
-    else:
-        return "Комп выиграл!"
+        return row
+    except Exception as e:
+        return f"Произошла ошибка: {e}"
 
-def play_game():
-    print("Добро пожаловать в 'К, Н, Б'!")
-    user_choice = get_user_choice()
-    computer_choice = get_computer_choice()
+# Пример использования
+file_path = input("Введите имя файла (например, data.xlsx): ")
+row_index = int(input("Введите номер строки (начиная с 0): "))
 
-    print(f"Вы выбрали: {user_choice}")
-    print(f"Комп выбрал: {computer_choice}")
+result = get_row_from_excel(file_path, row_index)
+print(result)
 
-    result = winner(user_choice, computer_choice)
-    print(result)
 
-if __name__ == "__main__":
-    play_game()
+
+
+
+ЗАДАЧА 2
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0, 2 * np.pi, 1000)
+
+y_1 = np.sin(x)
+y_2 = np.cos(x)
+y_3 = np.tan(x)
+plt.plot (x,y_1, y_2, y_3)
+
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('График функции y_1 = sin(x)')
+plt.title('График функции y_2 = cos(x)')
+plt.title('График функции y_3 = tan(x)')
+plt.grid(True)
+plt.show()
+
+
+
+
+
+ЗАДАЧА 3
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
+
+# Создание данных для графика
+x = np.linspace(-5, 5, 100)
+y = np.linspace(-5, 5, 100)
+x, y = np.meshgrid(x, y)
+
+# Пользовательская функция для z
+def custom_function(x, y):
+    return np.sin(np.sqrt(x**2 + y**2)) + np.cos(x) * np.sin(y)
+
+z = custom_function(x, y)
+
+# Создание 3D графика
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+# Построение поверхности
+ax.plot_surface(x, y, z, cmap='plasma')
+
+# Настройка меток осей
+ax.set_xlabel('Ось X')
+ax.set_ylabel('Ось Y')
+ax.set_zlabel('Ось Z')
+
+# Отображение графика
+plt.show()
