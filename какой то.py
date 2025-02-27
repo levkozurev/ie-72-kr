@@ -25,7 +25,7 @@ print(result)
 
 
 
-ЗАДАЧА 2
+ЗАДАЧА 2 ДЛЯ НЕЁ 1 ФОТКА
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -48,7 +48,7 @@ plt.show()
 
 
 
-ЗАДАЧА 3
+ЗАДАЧА 3 ДЛЯ НЕЁ 2 ФОТКИ
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
