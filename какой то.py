@@ -1,80 +1,72 @@
-ЗАДАЧА 1
-from openpyxl import load_workbook
-
-def get_row_from_excel(file_path, row_index):
-    try:
-        # Загрузка Excel файла
-        workbook = load_workbook(filename='Лист XLSX.xlsx')
-        sheet = workbook.active  # Получаем активный лист
-
-        # Получение строки по индексу (индексация с 1)
-        row = [cell.value for cell in sheet[row_index + 1]]
-
-        return row
-    except Exception as e:
-        return f"Произошла ошибка: {e}"
-
-# Пример использования
-file_path = input("Введите имя файла (например, data.xlsx): ")
-row_index = int(input("Введите номер строки (начиная с 0): "))
-
-result = get_row_from_excel(file_path, row_index)
-print(result)
+import flet as ft
+import os
 
 
+def main(page):
+    # Настройки окна
+    page.title = "Счетчик кликов+"
+    page.window_width = 400
+    page.window_height = 300
+    page.vertical_alignment = "center"
+    page.horizontal_alignment = "center"
+
+    # Файл для сохранения
+    SAVE_FILE = "saved_clicks.txt"
+
+    # Загружаем сохраненные клики при старте
+    def load_saved():
+        if os.path.exists(SAVE_FILE):
+            with open(SAVE_FILE, "r") as f:
+                try:
+                    return int(f.read())
+                except:
+                    return 0
+        return 0
+
+    saved_count = load_saved()
+    current_count = 0
+
+    # Элементы интерфейса
+    count_text = ft.Text(value=f"Текущие: 0 | Всего: {saved_count}", size=24)
+
+    # Обновляем текст
+    def update_text():
+        count_text.value = f"Текущие: {current_count} | Всего: {saved_count}"
+        page.update()
+
+    # Кнопка для подсчета
+    def click(e):
+        nonlocal current_count
+        current_count += 1
+        update_text()
+
+    # Кнопка сброса
+    def reset(e):
+        nonlocal current_count
+        current_count = 0
+        update_text()
+
+    # Кнопка сохранения
+    def save(e):
+        nonlocal saved_count
+        saved_count += current_count
+        with open(SAVE_FILE, "w") as f:
+            f.write(str(saved_count))
+        update_text()
+
+    # Создаем кнопки
+    click_btn = ft.ElevatedButton("Клик!", on_click=click, width=200)
+    reset_btn = ft.ElevatedButton("Сбросить текущие", on_click=reset, width=200)
+    save_btn = ft.ElevatedButton("save", on_click=save, width=200)
+
+    # Добавляем элементы на страницу
+    page.add(
+        count_text,
+        click_btn,
+        reset_btn,
+        save_btn
+    )
 
 
-
-ЗАДАЧА 2 
-import numpy as np
-import matplotlib.pyplot as plt
-
-x = np.linspace(0, 2 * np.pi, 1000)
-
-y_1 = np.sin(x)
-y_2 = np.cos(x)
-y_3 = np.tan(x)
-plt.plot (x,y_1, y_2, y_3)
-
-plt.xlabel('x')
-plt.ylabel('y')
-plt.title('График функции y_1 = sin(x)')
-plt.title('График функции y_2 = cos(x)')
-plt.title('График функции y_3 = tan(x)')
-plt.grid(True)
-plt.show()
-
-
-
-
-
-ЗАДАЧА 3 ДЛЯ НЕЁ 1 ФОТКА
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-import numpy as np
-
-# Создание данных для графика
-x = np.linspace(-5, 5, 100)
-y = np.linspace(-5, 5, 100)
-x, y = np.meshgrid(x, y)
-
-# Пользовательская функция для z
-def custom_function(x, y):
-    return np.sin(np.sqrt(x**2 + y**2)) + np.cos(x) * np.sin(y)
-
-z = custom_function(x, y)
-
-# Создание 3D графика
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-
-# Построение поверхности
-ax.plot_surface(x, y, z, cmap='plasma')
-
-# Настройка меток осей
-ax.set_xlabel('Ось X')
-ax.set_ylabel('Ось Y')
-ax.set_zlabel('Ось Z')
-
-# Отображение графика
-plt.show()
+# Запускаем приложение
+ft.app(target=main)
